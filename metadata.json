@@ -1,0 +1,6 @@
+{
+  "name": "GreatShort Earning App",
+  "description": "Production-ready short-video streaming & earning application with Urdu/English UI, secure watch verification, and dual wallet ledger.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

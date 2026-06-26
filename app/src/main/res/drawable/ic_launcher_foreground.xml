@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Play shape backdrop with glowing gradient -->
+    <path
+        android:pathData="M38,30 L76,54 L38,78 Z"
+        android:fillColor="#00E676" />
+    <!-- Dollar sign overlay symbol -->
+    <path
+        android:pathData="M52,43 C50,43 48,44 48,46 C48,48 50,49 52,50 C54,51 56,52 56,54 C56,56 54,57 52,57 L52,59 L49,59 L49,57 L47,57 L47,55 L49,55 L49,54 L51,54 L51,55 C51,55 52,55 52,55 C53,55 54,55 54,54 C54,53 53,52 51,51 C49,50 46,49 46,46 C46,44 48,42 50,42 L50,40 L52,40 L52,42 L54,42 L54,44 L52,44 Z"
+        android:fillColor="#121212" />
+</vector>
