@@ -1,0 +1,86 @@
+name: Build and Release APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: |
+          ./gradlew clean
+          ./gradlew assembleDebug -x lint
+
+      - name: Upload APK to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: app/build/outputs/apk/debug/app-debug.apk
+          tag_name: v1.0.0
+          name: "Great Shorts v1.0.0"
+          body: |
+            # 🎉 Great Shorts v1.0.0 - ریلیز ہو گیا!
+
+            ## 📱 Great Shorts - ویڈیوز دیکھ کر پیسے کمائیں
+
+            ### ✨ خصوصیات:
+            - 💰 ہر ویڈیو دیکھنے پر رقم کمائیں
+            - 🎬 مختصر اور دلچسپ ویڈیوز
+            - 👥 ریفرل سسٹم سے بونس حاصل کریں
+            - ⚙️ مکمل ایڈمن کنٹرول
+            - 🌐 اردو اور انگریزی
+
+            ### 📥 انسٹالیشن کی ہدایات:
+
+            **مرحلہ 1: APK ڈاؤن لوڈ کریں**
+            - اوپر دیے گئے `app-debug.apk` فائل کو کلک کریں اور ڈاؤن لوڈ کریں
+
+            **مرحلہ 2: نامعلوم ذرائع کی اجازت دیں**
+            1. اپنے فون کی Settings کھولیں
+            2. Security یا Privacy میں جائیں
+            3. "Install unknown apps" یا "Unknown Sources" کو ON کریں
+
+            **مرحلہ 3: APK انسٹال کریں**
+            1. ڈاؤن لوڈ شدہ APK فائل پر کلک کریں
+            2. "Install" دبائیں
+            3. انسٹالیشن مکمل ہونے کا انتظار کریں
+
+            **مرحلہ 4: ایپلیکیشن شروع کریں**
+            - ایپلیکیشن کھولیں اور ویڈیوز دیکھ کر کمانا شروع کریں!
+
+            ### 🎯 خصوصیات کا استعمال:
+            - ✅ ویڈیوز دیکھیں اور رقم کمائیں
+            - ✅ اپنے دوستوں کو ریفر کریں
+            - ✅ اپنی کمائی دیکھیں
+            - ✅ Admin سے رابطہ کریں
+
+            ### 📞 مسائل کی رپورٹنگ
+            اگر کوئی مسئلہ آئے تو GitHub Issues میں لکھیں۔
+
+            ### 🔒 حفاظت:
+            - یہ APK صرف testing کے لیے ہے
+            - اپنا ڈیٹا محفوظ رکھیں
+
+            ---
+
+            **شکریہ! Great Shorts استعمال کریں اور کمائیں!** 🚀
+
+            **ریلیز تاریخ:** 27 جون 2026
+            **ورژن:** 1.0.0
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
