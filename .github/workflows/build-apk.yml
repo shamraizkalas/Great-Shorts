@@ -16,14 +16,21 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: gradle
+
+      - name: Download Gradle Wrapper
+        run: |
+          mkdir -p gradle/wrapper
+          cd gradle/wrapper
+          wget https://services.gradle.org/distributions/gradle-8.7-bin.zip
+          unzip -q gradle-8.7-bin.zip
+          cd ../..
 
       - name: Make gradlew executable
         run: chmod +x gradlew
 
       - name: Build Debug APK
-        run: |
-          ./gradlew clean
-          ./gradlew assembleDebug -x lint
+        run: ./gradlew assembleDebug -x lint --no-daemon
 
       - name: Upload APK to Release
         uses: softprops/action-gh-release@v1
@@ -69,10 +76,6 @@ jobs:
 
             ### 📞 مسائل کی رپورٹنگ
             اگر کوئی مسئلہ آئے تو GitHub Issues میں لکھیں۔
-
-            ### 🔒 حفاظت:
-            - یہ APK صرف testing کے لیے ہے
-            - اپنا ڈیٹا محفوظ رکھیں
 
             ---
 
