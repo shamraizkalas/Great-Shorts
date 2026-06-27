@@ -1,13 +1,10 @@
-name: Build APK
+name: Build and Release APK
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
 
 jobs:
   build:
@@ -27,38 +24,44 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --stacktrace || ./gradlew assembleDebug --stacktrace
 
-      - name: Upload Debug APK Artifact
-        uses: actions/upload-artifact@v4
-        if: success()
-        with:
-          name: debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 30
+      - name: Find APK
+        run: find . -name "*.apk" -type f
 
-      - name: Create Release with APK
-        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+      - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: app/build/outputs/apk/debug/app-debug.apk
-          tag_name: v${{ github.run_number }}-debug
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/debug/*.apk
+          tag_name: v1.0.0
           body: |
-            🎉 Great Shorts APK Build #${{ github.run_number }}
+            # 🎉 Great Shorts v1.0.0 Release
             
-            📱 **Debug APK**: app-debug.apk
-            📅 Built on: ${{ github.event.head_commit.timestamp }}
-            👤 Author: ${{ github.actor }}
+            ## 📱 Earn Money by Watching Videos
+            ویڈیوز دیکھ کر پیسے کمائیں
             
-            Download اور test کریں! 🚀
+            ## ✨ Features:
+            - 💰 Earn Money
+            - 🎬 Watch Short Videos  
+            - 👥 Referral System
+            - ⚙️ Admin Panel
+            - 🌐 Bilingual (English/Urdu)
+            
+            ## 📥 Installation:
+            1. Download APK file
+            2. Enable "Unknown Sources" in Settings
+            3. Install APK
+            4. Launch and Enjoy!
+            
+            ## 📝 Release Date:
+            27 June 2026
+            
+            ---
+            **Download اور enjoy کریں!** 🚀
           draft: false
-          prerelease: true
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build Failed - Show Error Logs
-        if: failure()
-        run: |
-          echo "❌ APK Build Failed!"
-          echo "Logs available in workflow run"
